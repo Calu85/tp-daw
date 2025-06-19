@@ -101,6 +101,7 @@ class Main implements EventListenerObject {
     const numeric_id = Number(id);
     const body = JSON.stringify({ id: numeric_id });
     xmlReq.open("DELETE", "http://localhost:8000/devices", true);
+    xmlReq.setRequestHeader("Content-Type", "application/json");
     xmlReq.send(body);
   }
 }
