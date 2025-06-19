@@ -1,26 +1,33 @@
+var M;
 class Main implements EventListenerObject {
   handleEvent(object: Event): void {
     console.log(object);
     let elementoClick = <HTMLInputElement>object.target;
     if (elementoClick.id == "btnMostrar" && object.type == "click") {
       this.consultarAlServidor();
-      console.log("click mostrar", elementoClick.checked, elementoClick.id)
+      console.log("click mostrar", elementoClick.checked, elementoClick.id);
     } else if (elementoClick.id == "btnAgregar" && object.type == "click") {
       this.agregarDispositivo();
-      console.log("click agregar", elementoClick.checked, elementoClick.id)
-    } else if (elementoClick.id.startsWith("cb_") && object.type=="click") {
-      console.log("click checkbox", elementoClick.checked, elementoClick.id)
-      const deviceId = elementoClick.id.substring(3); 
+      console.log("click agregar", elementoClick.checked, elementoClick.id);
+    } else if (elementoClick.id.startsWith("cb_") && object.type == "click") {
+      console.log("click checkbox", elementoClick.checked, elementoClick.id);
+      const deviceId = elementoClick.id.substring(3);
       console.log(deviceId);
       this.cambiarEstado(deviceId);
-    } else if (elementoClick.id.startsWith("btnRemove_") && object.type=="click") {
-      console.log("click eliminar", elementoClick.id)
-      const deviceId = elementoClick.id.substring(10); 
+    } else if (
+      elementoClick.id.startsWith("btnRemove_") &&
+      object.type == "click"
+    ) {
+      console.log("click eliminar", elementoClick.id);
+      const deviceId = elementoClick.id.substring(10);
       this.eliminarDispositivo(deviceId);
-    } else if (elementoClick.id.startsWith("btnEdit_") && object.type=="click") {
-      console.log("click editar", elementoClick.id)
+    } else if (
+      elementoClick.id.startsWith("btnEdit_") &&
+      object.type == "click"
+    ) {
+      console.log("click editar", elementoClick.id);
       //this.cambiarEstado();
-    }    
+    }
   }
 
   public consultarAlServidor() {
@@ -54,7 +61,7 @@ class Main implements EventListenerObject {
             listado += `<span class="lever"></span> On
                                             </label>
                                         </div>
-                                        <button class="btn-small red" id="btnEdit_${o.id}">Editar</button>
+                                        <button class="btn-small modal-trigger red" id="btnEdit_${o.id}" data-target="modalEditar">Editar</button>
                                         <button class="btn-small red" id="btnRemove_${o.id}">Eliminar</button>
                                     </a>`;
             listado += "</li>";
@@ -82,25 +89,27 @@ class Main implements EventListenerObject {
   public agregarDispositivo() {
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", "http://localhost:8000/devices", true);
-    xmlReq.send(); 
+    xmlReq.send();
   }
 
   public cambiarEstado(id: string) {
     let xmlReq = new XMLHttpRequest();
-    xmlReq.open("PUT", "http://localhost:8000/devices/"+id, true);
-    xmlReq.send();  
+    xmlReq.open("PUT", "http://localhost:8000/devices/" + id, true);
+    xmlReq.send();
   }
- 
+
   public eliminarDispositivo(id: string) {
     let xmlReq = new XMLHttpRequest();
-    const numeric_id=Number(id)
-    const body = JSON.stringify({id:numeric_id});
+    const numeric_id = Number(id);
+    const body = JSON.stringify({ id: numeric_id });
     xmlReq.open("DELETE", "http://localhost:8000/devices", true);
-    xmlReq.send(body);  
+    xmlReq.send(body);
   }
 }
 
 window.addEventListener("load", () => {
+  var elems = document.querySelectorAll(".modal");
+  var instances = M.Modal.init(elems, null);
   let main: Main = new Main();
   let btnMostrar = document.getElementById("btnMostrar");
   btnMostrar.addEventListener("click", main);

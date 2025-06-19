@@ -26,7 +26,24 @@
             <br />
             <h3>TP de calu</h3>
             <br />
-
+            <div id="modalAgregar" class="modal">
+                <div class="modal-content">
+                    <h4>Agregar dispositivo</h4>
+                    <p>A bunch of text</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>
+            <div id="modalEditar" class="modal">
+                <div class="modal-content">
+                    <h4>Editar dispositivo</h4>
+                    <p>A bunch of text</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>
             <div id="" class="row">
                 <ul id="lista" class="collection"></ul>
             </div>
@@ -39,9 +56,10 @@
             </div>
             <div class="row">
                 <div class="col s4 m8 l2 xl2">
-                    <button id="btnAgregar" class="btn waves-effect waves-light button-view">
+                    <button id="btnAgregar" class="btn modal-trigger waves-effect waves-light button-view" data-target="modalAgregar">
                         Agregar dispositivo
                     </button>
+                    
                 </div>
             </div>
         </div>
