@@ -22,11 +22,9 @@ class Main implements EventListenerObject {
       const deviceId = elementoClick.id.substring(10);
       this.eliminarDispositivo(deviceId);
     } else if (
-      elementoClick.id.startsWith("btnEdit_") &&
-      object.type == "click"
+      elementoClick.id.startsWith("btnEdit_") && object.type == "click"
     ) {
       console.log("click editar", elementoClick.id);
-      //this.cambiarEstado();
     }
   }
 
