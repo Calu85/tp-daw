@@ -1,4 +1,6 @@
 var M;
+
+const endpointDevices:string = "http://localhost:8000/devices"
 class Main implements EventListenerObject {
   handleEvent(object: Event): void {
     console.log(object);
@@ -80,13 +82,13 @@ class Main implements EventListenerObject {
       }
     };
 
-    xmlReq.open("GET", "http://localhost:8000/devices", true);
+    xmlReq.open("GET", endpointDevices, true);
     xmlReq.send();
   }
 
   public agregarDispositivo() {
     let xmlReq = new XMLHttpRequest();
-    xmlReq.open("POST", "http://localhost:8000/devices", true);
+    xmlReq.open("POST", endpointDevices, true);
     xmlReq.send();
   }
 
@@ -96,13 +98,15 @@ class Main implements EventListenerObject {
     xmlReq.send();
   }
 
+  //Elimina el dispositivo que recibe como parámetro y actualiza la lista para que se vea el cambio. 
   public eliminarDispositivo(id: string) {
     let xmlReq = new XMLHttpRequest();
     const numeric_id = Number(id);
     const body = JSON.stringify({ id: numeric_id });
-    xmlReq.open("DELETE", "http://localhost:8000/devices", true);
+    xmlReq.open("DELETE", endpointDevices, true);
     xmlReq.setRequestHeader("Content-Type", "application/json");
     xmlReq.send(body);
+    this.consultarAlServidor()
   }
 }
 
