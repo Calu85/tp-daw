@@ -4,11 +4,23 @@ class Main implements EventListenerObject {
     let elementoClick = <HTMLInputElement>object.target;
     if (elementoClick.id == "btnMostrar" && object.type == "click") {
       this.consultarAlServidor();
+      console.log("click mostrar", elementoClick.checked, elementoClick.id)
     } else if (elementoClick.id == "btnAgregar" && object.type == "click") {
       this.agregarDispositivo();
+      console.log("click agregar", elementoClick.checked, elementoClick.id)
     } else if (elementoClick.id.startsWith("cb_") && object.type=="click") {
-      this.cambiarEstado();
-    }
+      console.log("click checkbox", elementoClick.checked, elementoClick.id)
+      const deviceId = elementoClick.id.substring(3); 
+      console.log(deviceId);
+      this.cambiarEstado(deviceId);
+    } else if (elementoClick.id.startsWith("btnRemove_") && object.type=="click") {
+      console.log("click eliminar", elementoClick.id)
+      const deviceId = elementoClick.id.substring(10); 
+      this.eliminarDispositivo(deviceId);
+    } else if (elementoClick.id.startsWith("btnEdit_") && object.type=="click") {
+      console.log("click editar", elementoClick.id)
+      //this.cambiarEstado();
+    }    
   }
 
   public consultarAlServidor() {
@@ -67,9 +79,25 @@ class Main implements EventListenerObject {
     xmlReq.send();
   }
 
-  public agregarDispositivo() {}
+  public agregarDispositivo() {
+    let xmlReq = new XMLHttpRequest();
+    xmlReq.open("POST", "http://localhost:8000/devices", true);
+    xmlReq.send(); 
+  }
 
-  public cambiarEstado() {}
+  public cambiarEstado(id: string) {
+    let xmlReq = new XMLHttpRequest();
+    xmlReq.open("PUT", "http://localhost:8000/devices/"+id, true);
+    xmlReq.send();  
+  }
+ 
+  public eliminarDispositivo(id: string) {
+    let xmlReq = new XMLHttpRequest();
+    const numeric_id=Number(id)
+    const body = JSON.stringify({id:numeric_id});
+    xmlReq.open("DELETE", "http://localhost:8000/devices", true);
+    xmlReq.send(body);  
+  }
 }
 
 window.addEventListener("load", () => {
