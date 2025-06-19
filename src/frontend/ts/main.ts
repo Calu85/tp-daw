@@ -33,38 +33,27 @@ class Main implements EventListenerObject{
                         
                         listado += "<li class='collection-item avatar'>"
                         if (o.type == 1) {
-                            
                             listado += `<img src="./static/images/lightbulb.png" alt="" class="circle">`
                         } else {
                             listado += `<img src="./static/images/window.png" alt="" class="circle">`
                         }
                         listado += `<span class="title">${o.name}</span>`
                         listado += ` <p>${o.description}</p>`
-                        if (o.state) {
-                            listado += `<a href="#!" class="secondary-content">
-                            <div class="switch">
-                                <label>
-                                Off
-                                <input id='cb_${o.id}' miIdBd='${o.id}' checked type="checkbox">
-                                <span class="lever"></span>
-                                On
-                                </label>
-                            </div>
-                            </a>`
-                        } else {
-                            listado += `<a href="#!" class="secondary-content">
-                            <div class="switch">
-                                <label>
-                                Off
-                                <input id='cb_${o.id}' type="checkbox">
-                                <span class="lever"></span>
-                                On
-                                </label>
-                            </div>
-                            </a>`
-                        }
+                        listado += `<a href="#!" class="secondary-content">
+                                        <div class="switch" style="display: inline-block; margin-right: 20px;">
+                                            <label> Off`
+                                            if (o.state) {
+                                                listado += `<input id='cb_${o.id}' checked type="checkbox">`
+                                            } else {
+                                                listado += `<input id='cb_${o.id}' type="checkbox">`
+                                            }
+                                            listado += `"<span class="lever"></span> On
+                                            </label>
+                                        </div>
+                                        <button class="btn-small red" id="btnEdit_${o.id}">Editar</button>
+                                        <button class="btn-small red" id="btnRemove_${o.id}">Eliminar</button>
+                                    </a>`                            
                         listado += '</li>';
-             
                     }
                     div.innerHTML = listado;
 
