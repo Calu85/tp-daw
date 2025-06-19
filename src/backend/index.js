@@ -59,6 +59,30 @@ app.put('/devices/',function(req,res,next){
     })
 });
 
+app.get('/devices/:id', function(req, res, next) {
+    utils.query("SELECT * FROM Devices where id = "+req.params.id, function(error,respuesta,campos){
+        if(error==null){
+            console.log(respuesta);
+            res.status(200).send(respuesta);    
+        }else{
+            console.log(error);
+            res.status(409).send({error:"Fallo la consulta"});
+        }
+    })
+});
+
+app.put('/devices/:id', function(req, res, next) {
+    utils.query("UPDATE Devices SET state = 1-state where id= "+req.params.id, function(error,respuesta,campos){
+        if(error==null){
+            console.log(respuesta);
+            res.status(200).send(respuesta);    
+        }else{
+            console.log(error);
+            res.status(409).send({error:"Fallo la consulta"});
+        }
+    })
+});
+
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
