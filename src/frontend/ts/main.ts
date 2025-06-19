@@ -8,25 +8,15 @@ class Main implements EventListenerObject {
     if (elementoClick.id == "btnMostrar" && object.type == "click") {
       this.consultarAlServidor();
       console.log("click mostrar", elementoClick.checked, elementoClick.id);
-    } else if (elementoClick.id == "btnAgregar" && object.type == "click") {
-      this.agregarDispositivo();
-      console.log("click agregar", elementoClick.checked, elementoClick.id);
     } else if (elementoClick.id.startsWith("cb_") && object.type == "click") {
       console.log("click checkbox", elementoClick.checked, elementoClick.id);
       const deviceId = elementoClick.id.substring(3);
       console.log(deviceId);
       this.cambiarEstado(deviceId);
-    } else if (
-      elementoClick.id.startsWith("btnRemove_") &&
-      object.type == "click"
-    ) {
+    } else if (elementoClick.id.startsWith("btnRemove_") && object.type == "click") {
       console.log("click eliminar", elementoClick.id);
       const deviceId = elementoClick.id.substring(10);
       this.eliminarDispositivo(deviceId);
-    } else if (
-      elementoClick.id.startsWith("btnEdit_") && object.type == "click"
-    ) {
-      console.log("click editar", elementoClick.id);
     }
   }
 
@@ -89,6 +79,12 @@ class Main implements EventListenerObject {
   public agregarDispositivo() {
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
+    xmlReq.send();
+  }
+
+  public editarDispositivo() {
+    let xmlReq = new XMLHttpRequest();
+    xmlReq.open("PUT", endpointDevices, true);
     xmlReq.send();
   }
 
