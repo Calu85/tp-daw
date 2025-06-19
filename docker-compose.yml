@@ -15,7 +15,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: userpass
         volumes:
-            -                    ./db/dumps:/docker-entrypoint-initdb.d
+            -                    ./db/dump:/docker-entrypoint-initdb.d
             -                    ./db/data:/var/lib/mysql
         networks:
             -                    app-fullstack-net
