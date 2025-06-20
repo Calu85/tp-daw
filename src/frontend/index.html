@@ -29,18 +29,22 @@
             <div id="modalAgregar" class="modal">
                 <div class="modal-content">
                     <h4>Agregar dispositivo</h4>
-                        <div class="input-field">
-                            <label for="iNombre">Nombre</label>
-                            <input type="text" id="iNombre">
-                        </div>
-                        <div class="input-field">
-                            <label for="iDescripcion">Descripción</label>
-                            <input type="text" id="iDescripcion">
-                        </div>
-                        <div class="input-field">
-                            <label for="iTipo">Tipo</label>
-                            <input type="text" placeholder="tiene que ser desplegable" id="iTipo">
-                        </div>
+                    <div class="input-field">
+                        <label for="iNombre">Nombre</label>
+                        <input type="text" id="iNombre">
+                    </div>
+                    <div class="input-field">
+                        <label for="iDescripcion">Descripción</label>
+                        <input type="text" id="iDescripcion">
+                    </div>
+                    <div class="input-field col s12">
+                        <select>
+                            <option value="" disabled selected>Seleccionar</option>
+                            <option value="1">Si-No</option>
+                            <option value="2">Intensidad controlable</option>
+                        </select>
+                        <label>Tipo</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#!" class="modal-close btn-flat">Cancelar</a>
@@ -52,13 +56,13 @@
             <div id="" class="row">
                 <ul id="lista" class="collection"></ul>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col s4 m4 l2 xl2">
                     <button id="btnMostrar" class="btn waves-effect waves-light button-view">
                         Mostrar elementos
                     </button>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col s4 m8 l2 xl2">
                     <button id="btnAgregar" class="btn modal-trigger waves-effect waves-light button-view"

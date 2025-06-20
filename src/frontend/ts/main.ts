@@ -5,10 +5,11 @@ class Main implements EventListenerObject {
   handleEvent(object: Event): void {
     console.log(object);
     let elementoClick = <HTMLInputElement>object.target;
-    if (elementoClick.id == "btnMostrar" && object.type == "click") {
-      this.consultarAlServidor();
-      console.log("click mostrar", elementoClick.checked, elementoClick.id);
-    } else if (elementoClick.id.startsWith("cb_") && object.type == "click") {
+    // if (elementoClick.id == "btnMostrar" && object.type == "click") {
+    //   this.consultarAlServidor();
+    //   console.log("click mostrar", elementoClick.checked, elementoClick.id);
+    // } else 
+    if (elementoClick.id.startsWith("cb_") && object.type == "click") {
       console.log("click checkbox", elementoClick.checked, elementoClick.id);
       const deviceId = elementoClick.id.substring(3);
       console.log(deviceId);
@@ -116,13 +117,7 @@ class Main implements EventListenerObject {
 
   public editarDispositivo(id: string) {
     const numeric_id = Number(id);
-    const form = document.getElementById(
-      "modalEditar_" + id
-    ) as HTMLFormElement;
-    if (!form) {
-      console.error("Form no encontrado");
-      return;
-    }
+    const form = document.getElementById("modalEditar_" + id) as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
     const body = JSON.stringify({
@@ -159,9 +154,11 @@ class Main implements EventListenerObject {
 window.addEventListener("load", () => {
   var elems = document.querySelectorAll(".modal");
   var instances = M.Modal.init(elems, null);
+  elems = document.querySelectorAll('select');
+  instances = M.FormSelect.init(elems, null);
   let main: Main = new Main();
-  let btnMostrar = document.getElementById("btnMostrar");
-  btnMostrar.addEventListener("click", main);
+  // let btnMostrar = document.getElementById("btnMostrar");
+  // btnMostrar.addEventListener("click", main);
   (window as any).editarDispositivo = (id: string) =>
     main.editarDispositivo(id);
   (window as any).agregarDispositivo = () => main.agregarDispositivo();
@@ -175,4 +172,5 @@ window.addEventListener("load", () => {
       }
     }
   };
+  main.consultarAlServidor();
 });
