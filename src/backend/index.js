@@ -37,6 +37,7 @@ app.post("/devices/", function (req, res, next) {
   });
 });
 
+//Borra el dispositivo con el id indicado en el body.
 app.delete("/devices/", function (req, res, next) {
   const consulta = "DELETE FROM Devices where id = " + req.body.id;
   console.log(consulta);
@@ -66,20 +67,6 @@ app.put("/devices/", function (req, res, next) {
       res.status(200).send({ saludo: "Modifico " + req.body.id });
     } else {
       res.status(409).send({ error: "Falta el id" });
-    }
-  });
-});
-
-app.get("/devices/:id", function (req, res, next) {
-  const consulta = "SELECT * FROM Devices where id = " + req.params.id;
-  console.log(consulta);
-  utils.query(consulta, function (error, respuesta, campos) {
-    if (error == null) {
-      console.log(respuesta);
-      res.status(200).send(respuesta);
-    } else {
-      console.log(error);
-      res.status(409).send({ error: "Fallo la consulta" });
     }
   });
 });
