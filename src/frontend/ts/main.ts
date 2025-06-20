@@ -77,15 +77,21 @@ class Main implements EventListenerObject {
   }
 
   public agregarDispositivo() {
+    const body = JSON.stringify({id:12, name:"fulano", description:"de tal", type:1});
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
-    xmlReq.send();
+    xmlReq.setRequestHeader("Content-Type", "application/json");
+    xmlReq.send(body);
+    this.consultarAlServidor();
   }
 
   public editarDispositivo() {
+    const body = JSON.stringify({id:10, name:"bicho", description:"de mierda", type:1});
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("PUT", endpointDevices, true);
-    xmlReq.send();
+    xmlReq.setRequestHeader("Content-Type", "application/json");
+    xmlReq.send(body);
+    this.consultarAlServidor();
   }
 
   public cambiarEstado(id: string) {
@@ -102,7 +108,7 @@ class Main implements EventListenerObject {
     xmlReq.open("DELETE", endpointDevices, true);
     xmlReq.setRequestHeader("Content-Type", "application/json");
     xmlReq.send(body);
-    this.consultarAlServidor()
+    this.consultarAlServidor();
   }
 }
 
@@ -112,6 +118,8 @@ window.addEventListener("load", () => {
   let main: Main = new Main();
   let btnMostrar = document.getElementById("btnMostrar");
   btnMostrar.addEventListener("click", main);
+  (window as any).editarDispositivo = () => main.editarDispositivo(); 
+  (window as any).agregarDispositivo = () => main.agregarDispositivo(); 
   let xmlReq = new XMLHttpRequest();
   xmlReq.onreadystatechange = () => {
     if (xmlReq.readyState == 4) {
@@ -121,5 +129,6 @@ window.addEventListener("load", () => {
         alert(xmlReq.responseText);
       }
     }
+ 
   };
 });
