@@ -72,11 +72,9 @@ app.put("/devices/", function (req, res, next) {
   });
 });
 
+//Cambia el estado de un device entre encendido (100) y apagado (0) y valores intermedios si corresponde.
 app.put("/devices/:id", function (req, res, next) {
-  const consulta =
-    "UPDATE Devices SET state = 1-state where id=" + req.params.id;
-  console.log(consulta);
-  utils.query(consulta, function (error, respuesta, campos) {
+  utils.query("UPDATE Devices SET state = ? where id=?", [req.body.state, req.params.id], function (error, respuesta, campos) {
     if (error == null) {
       console.log(respuesta);
       res.status(200).send(respuesta);

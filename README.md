@@ -160,9 +160,9 @@ Devuelve todos los dispositivos.
                 "id": #,
                 "name": "Nombre del dispositivo",
                 "description": "Alguna descripción",
-                "state": 1, //Por ahora 1 es encendido, 0 apagado
-                "type": 1 
-            },
+                "state": 50, // puede ser un valor entre 0 y 100
+                "type": 2 //1 representa un dispositivo ON-OFF, y 2 un dispositivo de intensidad variable
+            }, 
         ]
     }
 }
@@ -179,17 +179,6 @@ Agrega un dispositivo en la base de datos. El estado no se envía porque por def
                 "type": 1 
             },,
     "response_code": 200,
-    "response_body": {
-        "devices": [
-            {
-                "id": #,
-                "name": "Nombre del dispositivo",
-                "description": "Alguna descripción",
-                "state": 1, //Por ahora 1 es encendido, 0 apagado
-                "type": 1 
-            },
-        ]
-    }
 }
 ``` 
 
@@ -222,13 +211,19 @@ Borra un dispositivo de la base de datos. En el body se envía el id del disposi
 ``` 
 
 5) PUT, /devices/:id
-Modifica el estado del dispositivo indicado en el endpoint. No es necesario poner nada en el body.
+Modifica el estado del dispositivo indicado en el endpoint. El valor del dispotivo puede ser un entero entre 0 y 100 que se envía en el body.
+
 ```json
 {
     "method": "put",
     "request_headers": "application/json",
+    "request_body": {
+            "state":value
+        },
     "response_code": 200,
 }
 ``` 
 
+### Limitaciones
+Por ahora no hay chequeos de los valores ni rangos, todo lo que llega se asume correcto. 
 </details>

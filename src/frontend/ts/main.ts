@@ -5,15 +5,17 @@ class Main implements EventListenerObject {
   handleEvent(object: Event): void {
     console.log(object);
     let elementoClick = <HTMLInputElement>object.target;
-    // if (elementoClick.id == "btnMostrar" && object.type == "click") {
-    //   this.consultarAlServidor();
-    //   console.log("click mostrar", elementoClick.checked, elementoClick.id);
-    // } else 
+
     if (elementoClick.id.startsWith("cb_") && object.type == "click") {
       console.log("click checkbox", elementoClick.checked, elementoClick.id);
       const deviceId = elementoClick.id.substring(3);
       console.log(deviceId);
-      this.cambiarEstado(deviceId);
+      this.cambiarEstadoBinario(deviceId, );
+    } else if (elementoClick.id.startsWith("slider_") && object.type == "click") {
+      console.log("click slider", elementoClick.id);
+      const deviceId = elementoClick.id.substring(7);
+      console.log(deviceId);
+      this.cambiarEstadoContinuo(deviceId);
     } else if (
       elementoClick.id.startsWith("btnRemove_") &&
       object.type == "click"
@@ -44,16 +46,22 @@ class Main implements EventListenerObject {
             }
             listado += `<span class="title">${o.name}</span>`;
             listado += `<p>${o.description}</p>`;
-            listado += `<a href="#!" class="secondary-content">
-                          <div class="switch" style="display: inline-block; margin-right: 20px;">
-                            <label> Off`;
-            if (o.state) {
-              listado += `<input id='cb_${o.id}' checked type="checkbox">`;
-            } else {
-              listado += `<input id='cb_${o.id}' type="checkbox">`;
+            listado += `<a href="#!" class="secondary-content">`;
+            if (o.type == 1) {
+              listado += `<div class="switch" style="display: inline-block; margin-right: 20px;">`;
+              listado += `<label> Off`;
+              if (o.state) {
+                listado += `<input id='cb_${o.id}' checked type="checkbox">`;
+              } else {
+                listado += `<input id='cb_${o.id}' type="checkbox">`;
+              }
+              listado += `<span class="lever"></span> On</label>`;
+              listado += `</div>`;
+            } else if (o.type == 2) {
+              listado += `<div class="range-field" style="display: inline-block; margin-right: 20px;">
+                          <input type="range" id="slider_${o.id}" min="0" max="100" value="${o.state}">
+                        </div>`;
             }
-            listado += `<span class="lever"></span> On</label>
-                          </div>`;
             listado += `<button class="btn-small modal-trigger red" id="btnEdit_${o.id}" data-target="modalEditar_${o.id}">Editar</button>
                           <button class="btn-small red" id="btnRemove_${o.id}">Eliminar</button>
                         </a>`;
@@ -88,10 +96,16 @@ class Main implements EventListenerObject {
           for (let o of devices) {
             let modal = document.getElementById("modalEditar_" + o.id);
             M.Modal.init(modal);
-            let elems = document.querySelectorAll('select');
+            let elems = document.querySelectorAll("select");
             M.FormSelect.init(elems, null);
-            let checkbox = document.getElementById("cb_" + o.id);
-            checkbox.addEventListener("click", this);
+            if (o.type==1){
+              let checkbox = document.getElementById("cb_" + o.id);
+              checkbox.addEventListener("click", this);
+            }
+            else {
+              let deslizador = document.getElementById("slider_" + o.id);
+              deslizador.addEventListener("click", this);
+            }
             let btnRemove = document.getElementById("btnRemove_" + o.id);
             btnRemove.addEventListener("click", this);
             let btnEdit = document.getElementById("btnEdit_" + o.id);
@@ -110,7 +124,7 @@ class Main implements EventListenerObject {
     const form = document.getElementById("modalAgregar") as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
-    const select = form.querySelector<HTMLInputElement>("#sTipo")
+    const select = form.querySelector<HTMLInputElement>("#sTipo");
     //const selectedType = select.value;
     const body = JSON.stringify({
       name: nameInput.value,
@@ -126,10 +140,12 @@ class Main implements EventListenerObject {
 
   public editarDispositivo(id: string) {
     const numeric_id = Number(id);
-    const form = document.getElementById("modalEditar_" + id) as HTMLFormElement;
+    const form = document.getElementById(
+      "modalEditar_" + id
+    ) as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
-    const select = form.querySelector<HTMLInputElement>("#sTipo")
+    const select = form.querySelector<HTMLInputElement>("#sTipo");
     const body = JSON.stringify({
       id: numeric_id,
       name: nameInput.value,
@@ -143,10 +159,29 @@ class Main implements EventListenerObject {
     this.consultarAlServidor();
   }
 
-  public cambiarEstado(id: string) {
+  public cambiarEstadoBinario(id: string) {
+    const checkbox = document.getElementById("cb_"+id) as HTMLFormElement;
+    console.log(checkbox.checked);
+    let body: string;
+    if (checkbox.checked) {
+      body = JSON.stringify({state:100});
+    }
+    else {
+      body = JSON.stringify({state:0});
+    }
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("PUT", "http://localhost:8000/devices/" + id, true);
-    xmlReq.send();
+    xmlReq.setRequestHeader("Content-Type", "application/json");
+    xmlReq.send(body);
+  }
+
+  public cambiarEstadoContinuo(id: string) {
+    const slider = document.getElementById("slider_"+id) as HTMLFormElement;
+    const body = JSON.stringify({state:slider.value});
+    let xmlReq = new XMLHttpRequest();
+    xmlReq.open("PUT", "http://localhost:8000/devices/" + id, true);
+    xmlReq.setRequestHeader("Content-Type", "application/json");
+    xmlReq.send(body);
   }
 
   //Elimina el dispositivo que recibe como parámetro y actualiza la lista para que se vea el cambio.
@@ -164,7 +199,7 @@ class Main implements EventListenerObject {
 window.addEventListener("load", () => {
   var elems = document.querySelectorAll(".modal");
   var instances = M.Modal.init(elems, null);
-  elems = document.querySelectorAll('select');
+  elems = document.querySelectorAll("select");
   instances = M.FormSelect.init(elems, null);
   let main: Main = new Main();
   // let btnMostrar = document.getElementById("btnMostrar");
