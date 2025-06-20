@@ -81,7 +81,7 @@ class Main implements EventListenerObject {
     const nameInput = form.querySelector<HTMLInputElement>('#iNombre');
     const descInput = form.querySelector<HTMLInputElement>('#iDescripcion');
     console.log(nameInput.value)
-    const body = JSON.stringify({id:12, name:nameInput.value, description:descInput.value, type:1});
+    const body = JSON.stringify({name:nameInput.value, description:descInput.value, type:1});
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
     xmlReq.setRequestHeader("Content-Type", "application/json");

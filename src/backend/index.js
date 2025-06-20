@@ -26,17 +26,7 @@ app.get("/devices/", function (req, res, next) {
 
 //Agregar un dispositivo. Por defecto, se agrega en estado apagado.
 app.post("/devices/", function (req, res, next) {
-  const consulta =
-    "INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES (" +
-    req.body.id +
-    ",'" +
-    req.body.name +
-    "','" +
-    req.body.description +
-    "',0,"+
-    req.body.type +
-    ")";
-  utils.query(consulta, function (error, respuesta, campos) {
+  utils.query("INSERT INTO Devices (name, description, state, type) VALUES (?, ?, ?, ?)",[req.body.name,req.body.description,0,req.body.type], function (error, respuesta, campos) {
     if (error == null) {
       console.log(respuesta);
       res.status(200).send(respuesta);
