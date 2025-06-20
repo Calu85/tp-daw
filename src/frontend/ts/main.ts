@@ -77,7 +77,11 @@ class Main implements EventListenerObject {
   }
 
   public agregarDispositivo() {
-    const body = JSON.stringify({id:12, name:"fulano", description:"de tal", type:1});
+    const form = document.getElementById('modalAgregar') as HTMLFormElement;
+    const nameInput = form.querySelector<HTMLInputElement>('#iNombre');
+    const descInput = form.querySelector<HTMLInputElement>('#iDescripcion');
+    console.log(nameInput.value)
+    const body = JSON.stringify({id:12, name:nameInput.value, description:descInput.value, type:1});
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
     xmlReq.setRequestHeader("Content-Type", "application/json");
