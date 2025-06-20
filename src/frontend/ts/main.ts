@@ -68,6 +68,12 @@ class Main implements EventListenerObject {
                                   <label for="iDescripcion">Descripción</label>
                                   <input type="text" placeholder="desc" id="iDescripcion">
                               </div>
+                              <select id="sTipo">
+                                  <option value="" disabled selected>Seleccionar</option>
+                                  <option value="1">Si-No</option>
+                                  <option value="2">Intensidad controlable</option>
+                              </select>
+                              <label>Tipo</label>
                           </div>
                           <div class="modal-footer">
                               <a href="#!" class="modal-close btn-flat">Cancelar</a>
@@ -82,6 +88,8 @@ class Main implements EventListenerObject {
           for (let o of devices) {
             let modal = document.getElementById("modalEditar_" + o.id);
             M.Modal.init(modal);
+            let elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems, null);
             let checkbox = document.getElementById("cb_" + o.id);
             checkbox.addEventListener("click", this);
             let btnRemove = document.getElementById("btnRemove_" + o.id);
@@ -102,14 +110,12 @@ class Main implements EventListenerObject {
     const form = document.getElementById("modalAgregar") as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
-    
-    const select = document.getElementById('sTipo') as HTMLSelectElement;
-    const selectedType = select.value;
-    //console.log(selectedValue);
+    const select = form.querySelector<HTMLInputElement>("#sTipo")
+    //const selectedType = select.value;
     const body = JSON.stringify({
       name: nameInput.value,
       description: descInput.value,
-      type: selectedType,
+      type: select.value,
     });
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
@@ -123,11 +129,12 @@ class Main implements EventListenerObject {
     const form = document.getElementById("modalEditar_" + id) as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
+    const select = form.querySelector<HTMLInputElement>("#sTipo")
     const body = JSON.stringify({
       id: numeric_id,
       name: nameInput.value,
       description: descInput.value,
-      type: 1,
+      type: select.value,
     });
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("PUT", endpointDevices, true);

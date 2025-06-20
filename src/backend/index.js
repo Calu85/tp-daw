@@ -50,6 +50,7 @@ app.delete("/devices/", function (req, res, next) {
   });
 });
 
+//Modifica un dispositivo existente.
 app.put("/devices/", function (req, res, next) {
   const consulta =
     "UPDATE Devices SET name ='" +
