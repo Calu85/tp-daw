@@ -102,11 +102,14 @@ class Main implements EventListenerObject {
     const form = document.getElementById("modalAgregar") as HTMLFormElement;
     const nameInput = form.querySelector<HTMLInputElement>("#iNombre");
     const descInput = form.querySelector<HTMLInputElement>("#iDescripcion");
-    console.log(nameInput.value);
+    
+    const select = document.getElementById('sTipo') as HTMLSelectElement;
+    const selectedType = select.value;
+    //console.log(selectedValue);
     const body = JSON.stringify({
       name: nameInput.value,
       description: descInput.value,
-      type: 1,
+      type: selectedType,
     });
     let xmlReq = new XMLHttpRequest();
     xmlReq.open("POST", endpointDevices, true);
